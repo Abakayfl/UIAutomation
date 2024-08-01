@@ -25,9 +25,6 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
-    - name: Read Playwright report
-      id: read-report
-      run: cat playwright-report/index.html
     - name: Send email with test report
       if: always()
       uses: dawidd6/action-send-mail@v3
@@ -39,4 +36,8 @@ jobs:
         subject: Playwright Test Results
         to: abakayfl@gmail.com
         from: abakayfl@gmail.com
-        html_body: ${{ env.HTML_CONTENT }}
+        content_type: text/html
+        body: |
+          <h1>Playwright Test Report</h1>
+          <p>The Playwright test run has completed. Please find the attached report.</p>
+        attachments: playwright-report/index.html
