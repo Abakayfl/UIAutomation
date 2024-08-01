@@ -36,8 +36,7 @@ jobs:
         subject: Playwright Test Results
         to: abakayfl@gmail.com
         from: abakayfl@gmail.com
-        content_type: text/html
-        body: |
+        html_body: |
           <h1>Playwright Test Report</h1>
           <p>The Playwright test run has completed. Please find the attached report.</p>
         attachments: playwright-report/index.html
