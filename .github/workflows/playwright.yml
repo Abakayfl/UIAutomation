@@ -37,6 +37,6 @@ jobs:
         username: ${{ secrets.EMAIL_USERNAME }}
         password: ${{ secrets.EMAIL_PASSWORD }}
         subject: Playwright Test Results
-        to: recipient@example.com
-        from: sender@example.com
+        to: abakayfl@gmail.com
+        from: abakayfl@gmail.com
         html_body: ${{ steps.read-report.outputs.content }}
