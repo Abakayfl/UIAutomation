@@ -25,3 +25,19 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+    - name: Send email with test report
+      if: always()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 587
+        username: ${{ secrets.EMAIL_USERNAME }}
+        password: ${{ secrets.EMAIL_PASSWORD }}
+        subject: Playwright Test Results
+        to: abakayfl@gmail.com
+        from: abakayfl@gmail.com
+        content_type: text/html
+        body: |
+          <h1>Playwright Test Report</h1>
+          <p>The Playwright test run has completed. Please find the attached report.</p>
+        attachments: playwright-report/index.html
