@@ -39,5 +39,4 @@ jobs:
         subject: Playwright Test Results
         to: abakayfl@gmail.com
         from: abakayfl@gmail.com
-        content_type: text/html
-        body: ${{ steps.read-report.outputs.content }}
+        html_body: ${{ steps.read-report.outputs.content }}
