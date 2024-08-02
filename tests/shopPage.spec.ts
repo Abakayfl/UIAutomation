@@ -1,22 +1,33 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from '@playwright/test';
+import { HomePage } from '../pages/homePage';
+import { ShopPage } from '../pages/shopPage';
 
-test('test', async ({ page }) => {
-    await page.goto('https://status.abdulisik.com/');
-    const page1Promise = page.waitForEvent('popup');
-    await page.getByRole('link', { name: 'Shop.NA.Edu' }).click();
-    const page1 = await page1Promise;
-    await page1.getByRole('link', { name: 'Men ', exact: true }).hover();
-    await page1.getByRole('link', { name: 'T-Shirts' }).click();
-    await page1.locator('li').filter({ hasText: 'Men’s Champion T-Shirt $23.50 – $' }).getByRole('link').first().click();
-    await page1.waitForTimeout(1000);
-    await page1.getByRole('button', { name: 'Add to cart' }).click();
-    await page1.waitForTimeout(1000);
-    await page1.locator('#woofc-area').getByRole('link', { name: 'Cart' }).click();
-    await page1.waitForTimeout(4000);
-    // Define a more specific locator for the price element within the cart subtotal row
-    const priceLocator = page1.locator('tr.cart-subtotal td[data-title="Subtotal"] .woocommerce-Price-amount.amount');
+test('Verify shopping flow', async ({ page }) => {
+    const homePage = new HomePage(page);
 
-    // Check if the price element contains the expected text
-    await expect(priceLocator).toHaveText('$25.85');
-    
-  });
+    // Navigate to the initial page
+    await homePage.goto('https://status.abdulisik.com/');
+
+    // Click the Shop.NA.Edu link and get the popup page
+    const page1 = await homePage.clickShopNaEdu();
+    const shopPagePopup = new ShopPage(page1);
+
+    // Hover over 'Men' category and click on 'T-Shirts'
+    await shopPagePopup.hoverMenCategory();
+    await shopPagePopup.clickTShirts();
+
+    // Select the Champion T-Shirt from the list
+    await shopPagePopup.selectChampionTShirt();
+
+    // Wait for a second and add the item to the cart
+    await shopPagePopup.waitForTimeout(1000);
+    await shopPagePopup.addToCart();
+
+    // Wait for a second and navigate to the cart
+    await shopPagePopup.waitForTimeout(1000);
+    await shopPagePopup.navigateToCart();
+
+    // Wait for the cart page to load and verify the subtotal
+    await shopPagePopup.waitForTimeout(2000);
+    await shopPagePopup.verifySubtotal('$25.85');
+});
